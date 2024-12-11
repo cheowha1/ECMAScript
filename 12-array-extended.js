@@ -76,4 +76,103 @@ function testFilter() {
         numbers.filter(item => item % 3 ==0)
     );
 }
-testFilter();
+// testFilter();
+
+function testReduce() {
+    console.log("======= reduce");
+    // 가장 일반적인 Reduct -> 집계
+    console.log("원본:", source);
+    // source 배열의 모든 요소 합산
+    let sum = source.reduce((acc, value, index, arr) => {
+        console.log(
+            `콜백 파라미터 (acc: ${acc}, value: ${value}, index: ${index}, arr: ${arr}),`, acc + value
+        );
+        //  acc -> 현재까지의 집계 값
+        // value -> 현재 값
+
+        return acc + value; // -> 다음번 클백의 acc로 전달
+    }, 0);
+
+    console.log("합산결과:", sum);
+}
+// testReduce();
+
+function testReduce2() {
+    // 반복되는 모든것에는 reduce 함수를 적용할 수 있음
+    // map함수를 reduce 함수로 구현
+    // 모든 요소를 * 2 -> 새 배열 생성
+    console.log("원본배열:", numbers);
+    let result = numbers.reduce((acc, value) => {
+        console.log(`콜백 파라미터 (acc: ${acc}, value: ${value})`);
+        acc.push(value * 2)
+        console.log(` -> ${acc}`);
+
+        return acc;
+    }, [])
+    console.log("요소 두배:", result);
+}
+// testReduce2();
+
+function testReduce3() {
+    // reduce를 이용해서 filter 함수 구현
+    // numbers 배열의 요소 중 짝수만 필터링
+    console.log("원본배열:", numbers);
+
+    let result = numbers.reduce((acc, value) => {
+        if (value % 2 ==0) {    // 짝수
+            acc.push(value);
+        }
+        return acc;
+    }, [])
+    console.log("짝수배열:", result);
+}
+// testReduce3();
+
+const data = [
+    { name:"철수", kor: 85, eng: 92, math:88},
+    { name:"영희", kor: 70, eng: 74, math:95},
+    { name:"지후", kor: 91, eng: 89, math:85},
+    { name:"지수", kor: 65, eng: 70, math:72},
+    { name:"윤정", kor: 80, eng: 90, math:91}
+];
+// 데이터 파이프라인 구축 예제
+function testDataPipeline() {
+    console.log("=====map, filter, sort, reduce를 이용한 데이터 파이프 라인");
+    console.log("원본데이터:", data);
+
+    // map 함수 이용 -> total 파생 변수
+    const studentsWithTotal = data.map(student => ({...student,
+        total: student.kor + student.eng + student.math
+    }));
+    console.log("map:", studentsWithTotal);
+
+    // filter 함수 이용 -> total >=240 만 출력
+    const filteredStudents = studentsWithTotal.filter(student => student.total >= 240);
+    console.log("총점 240 이상:", filteredStudents);
+
+    // sort  함수 이용정렬 -> 총점 기준으로
+    const sortedStudents = filteredStudents.sort(
+        (a, b) => b.total - a.total
+    );
+    console.log("total 순 정렬:", sortedStudents);
+
+    // reduce 함수 활용 -> 240점 이상 학생들의 총점 평균
+    const totalSum = sortedStudents.reduce(
+        (acc, student) => acc + student.total, 0
+    );
+    console.log("총점240이상 학생들의 총점:", totalSum);
+    const avgTotalSum = totalSum / sortedStudents.length;
+    console.log("청점240이상 학생들의 평균:", avgTotalSum);
+}   
+// testDataPipeline();
+
+console.log(
+    "데이터 파이프라인 구축:",
+    data.map(student => ({
+        ...student,
+        total: student.kor + student.eng + student.math
+    }))
+  .filter(student => student.total >= 240)
+  .sort((a, b) => b.total - a.total)
+  .reduce((acc, student) => acc + student.total, 0) / 3
+);
