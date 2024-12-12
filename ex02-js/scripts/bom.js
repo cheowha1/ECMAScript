@@ -17,4 +17,3 @@ function printInner() {
     let message = `현재 윈도우 창의 크기는 ${window.innerWidth} x ${window.innerHeight} 입니다`;
     alert(message);
 }
-let name = prompt("이름을 입력해 주세요");
