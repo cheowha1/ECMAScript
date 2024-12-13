@@ -58,6 +58,13 @@
 
                 itemInput.val("");
                 itemInput.focus();
+
+                // delBtn에 click 이벤트 리스너 부착
+                delBtn.on("click",event => {
+                    // 삭제할 객체
+                    let removeItem =$(event.target.parentNode.parentNode);
+                    removeItem.remove();
+                })
             }
         }
 
