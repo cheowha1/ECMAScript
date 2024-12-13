@@ -27,8 +27,9 @@ function logicPromise() {
         // reject => rejected 상태로 이전시킬 때 사용하는 콜백
         console.log("begin logicPromise");
         setTimeout(() => {
-            resolve("RESOLVE")
-        });
+            // resolve("RESOLVE")
+            reject("REJECTED")
+        }, 3000);
     });
 }
 
